@@ -1,10 +1,10 @@
 # Acesse o projeto
 
+https://app-web-online.netlify.app
+
 ### Sobre o projeto
 
-É uma aplicação web de vendas online, onde os usuários têm acesso ao super usuário Root, capacitando-os a realizar diversas operações essenciais, como adicionar, atualizar e excluir categorias e produtos, além de criar novos usuários administradores.
-
-decidi aplicar ativamente TypeScript e Styled Components para demonstrar e aprimorar minhas habilidades com essas tecnologias.
+É uma aplicação web de vendas online, onde os usuários têm acesso ao super usuário Root, capacitando-os a realizar diversas operações essenciais, como adicionar, atualizar e excluir categorias e produtos, além de criar novos usuários administradores. Decidi aplicar ativamente TypeScript e Styled Components para demonstrar e aprimorar minhas habilidades com essas tecnologias.
 
 ### Principais tecnologias utilizadas no projeto
 
