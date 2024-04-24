@@ -60,7 +60,7 @@ const CategoryInsert = () => {
                   onClick={insertCategory}
                   type="primary"
                 >
-                  {categoryId || loading ? loading : 'Registrar categoria'}
+                  {categoryId ? 'Salvar' : 'Registrar categoria'}
                 </Button>
               </LimitedContainer>
             </DisplayFlexJustifyRight>

@@ -106,7 +106,7 @@ const ProductInsert = () => {
                   onClick={handleInsertProduct}
                   type="primary"
                 >
-                  {isEdit || loading ? loading : 'Registrar produto'}
+                  {isEdit ? 'Salvar' : 'Registrar produto'}
                 </Button>
               </LimitedContainer>
             </DisplayFlexJustifyRight>
