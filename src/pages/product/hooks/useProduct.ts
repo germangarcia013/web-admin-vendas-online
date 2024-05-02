@@ -15,7 +15,6 @@ export const useProduct = () => {
   const { request, loading } = useRequests();
   const navigate = useNavigate();
 
-
   useEffect(() => {
     setProdutsFiltered([...products]);
   }, [products]);
@@ -63,6 +62,6 @@ export const useProduct = () => {
     handleEditProduct,
     handleCloseModalDelete,
     handleOpenModalDelete,
-    loading
+    loading,
   };
 };

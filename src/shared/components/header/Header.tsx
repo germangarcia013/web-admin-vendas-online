@@ -20,7 +20,6 @@ const Header = () => {
   return (
     <>
       <Modal
-
         title="Atenção"
         open={open}
         onOk={() => logout(navigate)}

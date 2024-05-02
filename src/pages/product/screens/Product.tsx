@@ -4,6 +4,7 @@ import { ColumnsType } from 'antd/es/table';
 import { useMemo } from 'react';
 
 import Button from '../../../shared/components/buttons/button/Button';
+import Loading from '../../../shared/components/loading/Loading';
 import Screen from '../../../shared/components/screen/Screen';
 import {
   DisplayFlex,
@@ -16,7 +17,6 @@ import { convertNumberToMoney } from '../../../shared/functions/money';
 import { ProductType } from '../../../shared/types/ProductType';
 import CategoryColumn from '../components/CategoryColumn';
 import { useProduct } from '../hooks/useProduct';
-import Loading from '../../../shared/components/loading/Loading';
 
 const { Search } = Input;
 
@@ -30,9 +30,8 @@ const Product = () => {
     handleEditProduct,
     handleCloseModalDelete,
     handleOpenModalDelete,
-    loading
+    loading,
   } = useProduct();
-
 
   const columns: ColumnsType<ProductType> = useMemo(
     () => [
@@ -135,7 +134,6 @@ const Product = () => {
           <Table columns={columns} dataSource={productsFiltered} />
         </>
       )}
-
     </Screen>
   );
 };

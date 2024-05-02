@@ -1,19 +1,16 @@
-import {
-  LaptopOutlined,
-  ProfileOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { LaptopOutlined, ProfileOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu as MenuAntd } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import IconStore from '/icons-online-store.png'
+
+import IconStore from '/icons-online-store.png';
 
 import { CategoryRoutesEnum } from '../../../pages/category/routes';
+import { ImgStore } from '../../../pages/login/styles/loginScreen.styles';
 import { ProductRoutesEnum } from '../../../pages/product/routes';
 import { UserRoutesEnum } from '../../../pages/user/routes';
 import { ContainerLogoName, ContainerMenu, NameCompany } from './menu.style';
-import { ImgStore } from '../../../pages/login/styles/loginScreen.styles';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -46,7 +43,7 @@ const Menu = () => {
         <NameCompany>Vendas Online</NameCompany>
       </ContainerLogoName>
       <MenuAntd
-        style={{ background: '#3253a8', width: 240 }}
+        style={{ background: '#3253a8', width: 200 }}
         onClick={onClick}
         theme="dark"
         items={items}

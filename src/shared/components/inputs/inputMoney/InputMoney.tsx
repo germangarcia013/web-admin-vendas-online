@@ -39,12 +39,7 @@ const InputMoney = ({ value, onChange, addonBefore = 'R$', ...props }: InputMone
   };
 
   return (
-    <Input
-      addonBefore={addonBefore}
-      value={currentValue}
-      onChange={handleOnChange}
-      {...props}
-    />
+    <Input addonBefore={addonBefore} value={currentValue} onChange={handleOnChange} {...props} />
   );
 };
 

@@ -10,7 +10,7 @@ interface SelectProps extends SelectPropsAntd {
 const Select = ({ title, margin, ...props }: SelectProps) => {
   return (
     <BoxSelect style={{ margin }}>
-      {title && <TitleSelect >{title}</TitleSelect>}
+      {title && <TitleSelect>{title}</TitleSelect>}
       <SelectAntd style={{ width: '100%' }} {...props} />
     </BoxSelect>
   );

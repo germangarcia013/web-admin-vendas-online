@@ -15,6 +15,10 @@ export const HeaderContainer = styled.header`
   -webkit-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.47);
   -moz-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.47);
   box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.47);
+
+  @media (max-width: 1400px) {
+    height: 40px;
+  }
 `;
 
 export const LogoExit = styled(LogoutOutlined)`

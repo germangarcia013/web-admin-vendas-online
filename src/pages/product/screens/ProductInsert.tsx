@@ -1,3 +1,5 @@
+import { Divider } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import { useParams } from 'react-router-dom';
 
 import Button from '../../../shared/components/buttons/button/Button';
@@ -15,8 +17,6 @@ import { CategoryType } from '../../../shared/types/CategoryType';
 import { useCategory } from '../../category/hooks/useCategory';
 import { useInsertProduct } from '../hooks/useInsertProduct';
 import { ProductRoutesEnum } from '../routes';
-import { Divider } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 
 const ProductInsert = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -50,7 +50,7 @@ const ProductInsert = () => {
           <Loading size="large" />
         </DisplayFlexJustifyCenter>
       ) : (
-        <DisplayFlexJustifyCenter >
+        <DisplayFlexJustifyCenter>
           <LimitedContainer width={400}>
             <Input
               onChange={(event) => onChangeInput(event, 'name')}
@@ -87,15 +87,12 @@ const ProductInsert = () => {
               value={product.descricao}
               onChange={(event) => onChangeInput(event, 'descricao')}
               rows={4}
-              placeholder='Descrição do produto'
+              placeholder="Descrição do produto"
             />
             <Divider />
             <DisplayFlexJustifyRight>
               <LimitedContainer margin="0px 8px" width={120}>
-                <Button
-                  danger
-                  onClick={handleOnClickCancel}
-                >
+                <Button danger onClick={handleOnClickCancel}>
                   Cancelar
                 </Button>
               </LimitedContainer>

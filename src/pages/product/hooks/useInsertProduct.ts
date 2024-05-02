@@ -12,21 +12,26 @@ const DEFAULT_PRODUCT = {
   name: '',
   price: 0,
   image: '',
-  descricao: ''
+  descricao: '',
 };
 
 export const useInsertProduct = (productId?: string) => {
   const navigate = useNavigate();
   const [loadingProduct, setLoadingProduct] = useState(false);
-  const { request, loading} = useRequests();
+  const { request, loading } = useRequests();
   const { product: productReducer, setProduct: setProductReducer } = useProductReducer();
   const [isEdit, setIsEdit] = useState(false);
   const [disabledButton, setDisabledButton] = useState(true);
   const [product, setProduct] = useState<InsertProduct>(DEFAULT_PRODUCT);
 
   useEffect(() => {
-
-    if (product.name && product.categoryId && product.image && product.price > 0 && product.descricao) {
+    if (
+      product.name &&
+      product.categoryId &&
+      product.image &&
+      product.price > 0 &&
+      product.descricao
+    ) {
       setDisabledButton(false);
     } else {
       setDisabledButton(true);
@@ -88,16 +93,15 @@ export const useInsertProduct = (productId?: string) => {
   };
 
   const handleInsertProduct = async () => {
-  
     if (productId) {
-     const response = await request(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const response = await request(
         URL_PRODUCT_ID.replace('{productId}', productId),
         MethodsEnum.PUT,
         undefined,
         product,
         'Produto modificado!',
       );
-      
     } else {
       await request(URL_PRODUCT, MethodsEnum.POST, undefined, product, 'Produto criado!');
     }

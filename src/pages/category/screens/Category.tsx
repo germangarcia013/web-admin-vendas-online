@@ -3,6 +3,7 @@ import { Input, Modal } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import Button from '../../../shared/components/buttons/button/Button';
+import Loading from '../../../shared/components/loading/Loading';
 import Screen from '../../../shared/components/screen/Screen';
 import {
   DisplayFlex,
@@ -13,7 +14,6 @@ import { LimitedContainer } from '../../../shared/components/styles/limited.styl
 import Table from '../../../shared/components/table/Table';
 import { CategoryType } from '../../../shared/types/CategoryType';
 import { useCategory } from '../hooks/useCategory';
-import Loading from '../../../shared/components/loading/Loading';
 
 const { Search } = Input;
 
@@ -117,7 +117,6 @@ const Category = () => {
           <Table columns={columns} dataSource={categories} />
         </>
       )}
-
     </Screen>
   );
 };

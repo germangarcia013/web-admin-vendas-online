@@ -73,6 +73,6 @@ export const useCategory = () => {
     handleCloseModalDelete,
     handleConfirmDeleteCategory,
     handleGoToEditCategory,
-    loading
+    loading,
   };
 };

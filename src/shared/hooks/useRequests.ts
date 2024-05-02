@@ -67,6 +67,6 @@ export const useRequests = () => {
     loading,
     authRequest,
     request,
-    setLoading
+    setLoading,
   };
 };

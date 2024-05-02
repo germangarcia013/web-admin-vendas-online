@@ -1,5 +1,8 @@
+import { Divider, Input as InputAntd } from 'antd';
+
 import Button from '../../../shared/components/buttons/button/Button';
 import Input from '../../../shared/components/inputs/input/Input';
+import { BoxInput, TitleInput } from '../../../shared/components/inputs/input/input.styles';
 import Screen from '../../../shared/components/screen/Screen';
 import {
   DisplayFlexJustifyCenter,
@@ -8,8 +11,6 @@ import {
 import { LimitedContainer } from '../../../shared/components/styles/limited.styled';
 import { useUserInsert } from '../hooks/useUserInsert';
 import { UserRoutesEnum } from '../routes';
-import { Divider, Input as InputAntd } from 'antd';
-import { BoxInput, TitleInput } from '../../../shared/components/inputs/input/input.styles';
 
 const UserInsert = () => {
   const {
@@ -18,7 +19,8 @@ const UserInsert = () => {
     handleCancelInsert,
     handleInsertAdmin,
     handleOnChangeInput,
-    loading } = useUserInsert();
+    loading,
+  } = useUserInsert();
 
   return (
     <Screen
@@ -78,7 +80,12 @@ const UserInsert = () => {
               </Button>
             </LimitedContainer>
             <LimitedContainer width={160}>
-              <Button disabled={disabledButton} onClick={handleInsertAdmin} type="primary" loading={loading}>
+              <Button
+                disabled={disabledButton}
+                onClick={handleInsertAdmin}
+                type="primary"
+                loading={loading}
+              >
                 {loading ? loading : 'Cadastrar Admin'}
               </Button>
             </LimitedContainer>

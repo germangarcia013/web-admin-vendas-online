@@ -3,5 +3,5 @@ export interface InsertProduct {
   price: number;
   categoryId?: number;
   image: string;
-  descricao: string
+  descricao: string;
 }

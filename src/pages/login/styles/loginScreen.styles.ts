@@ -10,7 +10,6 @@ export const ContainerLoginScreen = styled.div`
   align-items: center;
   justify-content: center;
   background-color: gray;
-
 `;
 
 export const TitleLogin = styled(Title)`
@@ -26,24 +25,27 @@ export const ContainerLogin = styled.div`
   padding: 0px 22px;
   width: 100%;
   max-width: 420px;
-  height: 700px; 
+  height: 700px;
   border-radius: 20px;
-  margin: auto; 
+  margin: auto;
+
+  @media (max-width: 1400px) {
+    height: 600px;
+  }
 `;
 
 export const ContainerNotification = styled.div`
-  width: 100%; 
+  width: 100%;
   max-width: 490px;
-  height:220px;
+  height: 220px;
   background-color: white;
   border-radius: 20px;
   margin-top: 10px;
-  margin: auto; 
-  display:flex;
+  margin: auto;
+  display: flex;
   flex-direction: column;
-  gap:10px
+  gap: 10px;
 `;
-
 
 export const TitleNotice = styled.p`
   text-align: center;
@@ -56,16 +58,15 @@ export const TitleNotice = styled.p`
 export const SpanNotice = styled.p`
   font-size: 20px;
   color: #006397;
-  margin: 0 15px 
+  margin: 0 15px;
 `;
 
 export const Form = styled.form`
-  width:100%;
+  width: 100%;
 `;
 
 export const Errors = styled.p`
-  color: red
+  color: red;
 `;
 
-export const ImgStore = styled.img`
-`;
+export const ImgStore = styled.img``;
