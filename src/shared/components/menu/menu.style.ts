@@ -22,7 +22,6 @@ export const ContainerMenu = styled.div`
 `;
 
 export const ContainerLogoName = styled.div`
-  width: 100%;
   height: 72px;
   display: flex;
   align-items: center;

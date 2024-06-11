@@ -43,7 +43,7 @@ const Menu = () => {
         <NameCompany>Vendas Online</NameCompany>
       </ContainerLogoName>
       <MenuAntd
-        style={{ background: '#3253a8', width: 200 }}
+        style={{ background: '#3253a8', width: 240 }}
         onClick={onClick}
         theme="dark"
         items={items}
