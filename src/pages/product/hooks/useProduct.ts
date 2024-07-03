@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { URL_PRODUCT, URL_PRODUCT_ID } from '../../../shared/constants/urls';
-import { MethodsEnum } from '../../../shared/enums/methods.enum';
-import { useRequests } from '../../../shared/hooks/useRequests';
+import api from '../../../service/api';
+import { getAuthorizationToken } from '../../../shared/functions/connection/auth';
 import { ProductType } from '../../../shared/types/ProductType';
+import { useGlobalReducer } from '../../../store/reducers/globalReducer/useGlobalReducer';
 import { useProductReducer } from '../../../store/reducers/productReducer/useProductReducer';
 import { ProductRoutesEnum } from '../routes';
 
 export const useProduct = () => {
+  const { loading, setLoading, setNotification } = useGlobalReducer();
   const [productIdDelete, setProductIdDelete] = useState<number | undefined>();
   const { products, setProducts } = useProductReducer();
   const [productsFiltered, setProdutsFiltered] = useState<ProductType[]>([]);
-  const { request, loading } = useRequests();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +20,23 @@ export const useProduct = () => {
   }, [products]);
 
   useEffect(() => {
-    request<ProductType[]>(URL_PRODUCT, MethodsEnum.GET, setProducts);
+    const getProduct = async () => {
+      setLoading(true);
+      try {
+        const response = await api.get('/product', {
+          headers: {
+            Authorization: getAuthorizationToken(),
+          },
+        });
+        setProducts(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getProduct();
   }, []);
 
   const handleOnClickInsert = () => {
@@ -36,13 +52,33 @@ export const useProduct = () => {
   };
 
   const handleDeleteProduct = async () => {
-    await request(URL_PRODUCT_ID.replace('{productId}', `${productIdDelete}`), MethodsEnum.DELETE);
-    await request<ProductType[]>(URL_PRODUCT, MethodsEnum.GET, setProducts);
-    setProductIdDelete(undefined);
+    try {
+      setLoading(true);
+
+      await api.delete(`/product/${productIdDelete}`, {
+        headers: {
+          Authorization: getAuthorizationToken(),
+        },
+      });
+
+      setProductIdDelete(undefined);
+      setNotification('Sucesso!', 'success', 'Produto excluido com sucesso!');
+
+      const response = await api.get('/product', {
+        headers: {
+          Authorization: getAuthorizationToken(),
+        },
+      });
+      setProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleEditProduct = async (productId: number) => {
-    navigate(ProductRoutesEnum.PRODUCT_EDIT.replace(':productId', `${productId}`));
+    navigate(`/product/${productId}`);
   };
 
   const handleCloseModalDelete = () => {

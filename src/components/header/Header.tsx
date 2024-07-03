@@ -2,7 +2,7 @@ import { Modal } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { logout } from '../../functions/connection/auth';
+import { logout } from '../../shared/functions/connection/auth';
 import { HeaderContainer, LogoExit } from './header.style';
 
 const Header = () => {

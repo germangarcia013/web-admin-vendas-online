@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { URL_CATEGORY, URL_CATEGORY_ID } from '../../../shared/constants/urls';
-import { MethodsEnum } from '../../../shared/enums/methods.enum';
-import { useRequests } from '../../../shared/hooks/useRequests';
+import api from '../../../service/api';
+import { getAuthorizationToken } from '../../../shared/functions/connection/auth';
 import { useCategoryReducer } from '../../../store/reducers/categoryReducer/useCategoryReducer';
+import { useGlobalReducer } from '../../../store/reducers/globalReducer/useGlobalReducer';
 import { CategoryRoutesEnum } from '../routes';
 
 export const useInsertCategory = () => {
+  const { setNotification, loading, setLoading } = useGlobalReducer();
   const { categoryId } = useParams<{ categoryId: string }>();
   const [name, setName] = useState('');
   const navigate = useNavigate();
   const [disabledButton, setDisabledButton] = useState(true);
-  const { request, loading } = useRequests();
-  const { setCategories, category, setCategory } = useCategoryReducer();
+  const { category, setCategory } = useCategoryReducer();
 
   useEffect(() => {
     if (category) {
@@ -30,25 +30,61 @@ export const useInsertCategory = () => {
   }, [name]);
 
   useEffect(() => {
-    if (categoryId) {
-      request(URL_CATEGORY_ID.replace('{categoryId}', categoryId), MethodsEnum.GET, setCategory);
-    } else {
-      setName('');
-    }
+    const getCategoryID = async () => {
+      setLoading(true);
+      if (categoryId) {
+        const response = await api.get(`/category/${categoryId}`, {
+          headers: {
+            Authorization: getAuthorizationToken(),
+          },
+        });
+        const { data } = response;
+        setCategory(data);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        setName('');
+      }
+    };
+
+    getCategoryID();
   }, [categoryId]);
 
   const insertCategory = async () => {
     if (categoryId) {
-      await request(
-        URL_CATEGORY_ID.replace('{categoryId}', categoryId),
-        MethodsEnum.PUT,
-        undefined,
-        { name },
+      setLoading(true);
+
+      await api.put(
+        `/category/${categoryId}`,
+        {
+          name: name,
+        },
+        {
+          headers: {
+            Authorization: getAuthorizationToken(),
+          },
+        },
       );
+
+      setLoading(false);
+      setNotification('Sucesso!', 'success', 'Categoria atualizado com sucesso!');
     } else {
-      await request(URL_CATEGORY, MethodsEnum.POST, undefined, { name });
+      setLoading(true);
+      await api.post(
+        `/category`,
+        {
+          name: name,
+        },
+        {
+          headers: {
+            Authorization: getAuthorizationToken(),
+          },
+        },
+      );
+
+      setLoading(false);
+      setNotification('Sucesso!', 'success', 'Categoria cadastrado com sucesso!');
     }
-    await request(URL_CATEGORY, MethodsEnum.GET, setCategories);
 
     navigate(CategoryRoutesEnum.CATEGORY);
   };

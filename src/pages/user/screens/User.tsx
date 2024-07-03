@@ -3,15 +3,15 @@ import { ColumnsType } from 'antd/es/table';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../../../shared/components/buttons/button/Button';
-import Loading from '../../../shared/components/loading/Loading';
-import Screen from '../../../shared/components/screen/Screen';
+import Button from '../../../components/buttons/button/Button';
+import Loading from '../../../components/loading/Loading';
+import Screen from '../../../components/screen/Screen';
 import {
   DisplayFlexJustifyBetween,
   DisplayFlexJustifyCenter,
-} from '../../../shared/components/styles/display.styled';
-import { LimitedContainer } from '../../../shared/components/styles/limited.styled';
-import Table from '../../../shared/components/table/Table';
+} from '../../../components/styles/display.styled';
+import { LimitedContainer } from '../../../components/styles/limited.styled';
+import Table from '../../../components/table/Table';
 import { UserTypeEnum } from '../../../shared/enums/userType.enum';
 import { getUserInfoByToken } from '../../../shared/functions/connection/auth';
 import { insertMaskInCpf } from '../../../shared/functions/cpf';
@@ -62,14 +62,14 @@ const User = () => {
   const userToken = useMemo(() => getUserInfoByToken(), []);
 
   const handleGoToInsertAdmin = () => {
-    navigate(UserRoutesEnum.USER_INSERT);
+    navigate(UserRoutesEnum.ADMIN_INSERT);
   };
 
   return (
     <Screen
       listBreadcrumb={[
         {
-          name: 'USUÁRIOS',
+          name: 'USUÁRIOS ADMIN',
         },
       ]}
     >

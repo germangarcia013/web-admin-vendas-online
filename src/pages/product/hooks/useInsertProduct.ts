@@ -1,11 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { URL_PRODUCT, URL_PRODUCT_ID } from '../../../shared/constants/urls';
+import api from '../../../service/api';
 import { InsertProduct } from '../../../shared/dtos/InsertProduct.dto';
-import { MethodsEnum } from '../../../shared/enums/methods.enum';
-import { useRequests } from '../../../shared/hooks/useRequests';
-import { useProductReducer } from '../../../store/reducers/productReducer/useProductReducer';
+import { getAuthorizationToken } from '../../../shared/functions/connection/auth';
+import { useGlobalReducer } from '../../../store/reducers/globalReducer/useGlobalReducer';
 import { ProductRoutesEnum } from '../routes';
 
 const DEFAULT_PRODUCT = {
@@ -17,10 +16,8 @@ const DEFAULT_PRODUCT = {
 
 export const useInsertProduct = (productId?: string) => {
   const navigate = useNavigate();
-  const [loadingProduct, setLoadingProduct] = useState(false);
-  const { request, loading } = useRequests();
-  const { product: productReducer, setProduct: setProductReducer } = useProductReducer();
-  const [isEdit, setIsEdit] = useState(false);
+  const { setNotification, loading, setLoading } = useGlobalReducer();
+  const [isEdit] = useState(false);
   const [disabledButton, setDisabledButton] = useState(true);
   const [product, setProduct] = useState<InsertProduct>(DEFAULT_PRODUCT);
 
@@ -39,33 +36,30 @@ export const useInsertProduct = (productId?: string) => {
   }, [product]);
 
   useEffect(() => {
-    if (productReducer) {
-      setProduct({
-        name: productReducer.name,
-        price: productReducer.price,
-        image: productReducer.image,
-        descricao: productReducer.descricao,
-        categoryId: productReducer.category?.id,
-      });
-    }
-  }, [productReducer]);
-
-  useEffect(() => {
-    const findProduct = async () => {
-      setLoadingProduct(true);
-      await request(
-        URL_PRODUCT_ID.replace('{productId}', productId || ''),
-        MethodsEnum.GET,
-        setProductReducer,
-      );
-      setLoadingProduct(false);
-    };
-
     if (productId) {
-      setIsEdit(true);
+      const findProduct = async () => {
+        setLoading(true);
+
+        const response = await api.get(`/product/${productId}`, {
+          headers: {
+            Authorization: getAuthorizationToken(),
+          },
+        });
+
+        const { data } = response;
+
+        setProduct({
+          name: data.name,
+          price: data.price,
+          image: data.image,
+          descricao: data.descricao,
+          categoryId: data.category.id,
+        });
+        setLoading(false);
+      };
+
       findProduct();
     } else {
-      setProductReducer(undefined);
       setProduct(DEFAULT_PRODUCT);
     }
   }, [productId]);
@@ -93,19 +87,51 @@ export const useInsertProduct = (productId?: string) => {
   };
 
   const handleInsertProduct = async () => {
-    if (productId) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await request(
-        URL_PRODUCT_ID.replace('{productId}', productId),
-        MethodsEnum.PUT,
-        undefined,
-        product,
-        'Produto modificado!',
-      );
-    } else {
-      await request(URL_PRODUCT, MethodsEnum.POST, undefined, product, 'Produto criado!');
+    setLoading(true);
+    try {
+      if (productId) {
+        await api.put(
+          `/product/${productId}`,
+          {
+            categoryId: product.categoryId,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            descricao: product.descricao,
+          },
+          {
+            headers: {
+              Authorization: getAuthorizationToken(),
+            },
+          },
+        );
+        setLoading(false);
+        setNotification('Sucesso!', 'success', 'Produto atualizado com sucesso!');
+      } else {
+        setLoading(true);
+
+        await api.post(
+          `/product`,
+          {
+            categoryId: product.categoryId,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            descricao: product.descricao,
+          },
+          {
+            headers: {
+              Authorization: getAuthorizationToken(),
+            },
+          },
+        );
+        setLoading(false);
+        setNotification('Sucesso!', 'success', 'Produto criado!');
+      }
+      navigate(ProductRoutesEnum.PRODUCT);
+    } catch (error) {
+      console.log(error);
     }
-    navigate(ProductRoutesEnum.PRODUCT);
   };
 
   return {
@@ -113,10 +139,10 @@ export const useInsertProduct = (productId?: string) => {
     loading,
     disabledButton,
     isEdit,
-    loadingProduct,
     onChangeInput,
     handleInsertProduct,
     handleChangeSelect,
     handleOnClickCancel,
+    productId,
   };
 };

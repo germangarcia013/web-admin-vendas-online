@@ -1,4 +1,5 @@
 import { Typography } from 'antd';
+import { Menu } from 'antd';
 import styled from 'styled-components';
 
 const { Text } = Typography;
@@ -16,8 +17,17 @@ export const ContainerMenu = styled.div`
   -moz-box-shadow: 1px 0px 8px 0px rgba(0, 0, 0, 0.71);
   box-shadow: 1px 0px 8px 0px rgba(0, 0, 0, 0.71);
 
-  @media (max-width: 1400px) {
-    width: 200px;
+  @media (max-width: 1440px) {
+    width: 180px;
+  }
+`;
+
+export const MenuAntd = styled(Menu)`
+  background: #3253a8;
+  width: 240px;
+
+  @media (max-width: 1440px) {
+    width: 180px;
   }
 `;
 

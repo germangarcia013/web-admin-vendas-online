@@ -1,14 +1,14 @@
 import { Divider, Input as InputAntd } from 'antd';
 
-import Button from '../../../shared/components/buttons/button/Button';
-import Input from '../../../shared/components/inputs/input/Input';
-import { BoxInput, TitleInput } from '../../../shared/components/inputs/input/input.styles';
-import Screen from '../../../shared/components/screen/Screen';
+import Button from '../../../components/buttons/button/Button';
+import Input from '../../../components/inputs/input/Input';
+import { BoxInput, TitleInput } from '../../../components/inputs/input/input.styles';
+import Screen from '../../../components/screen/Screen';
 import {
   DisplayFlexJustifyCenter,
   DisplayFlexJustifyRight,
-} from '../../../shared/components/styles/display.styled';
-import { LimitedContainer } from '../../../shared/components/styles/limited.styled';
+} from '../../../components/styles/display.styled';
+import { LimitedContainer } from '../../../components/styles/limited.styled';
 import { useUserInsert } from '../hooks/useUserInsert';
 import { UserRoutesEnum } from '../routes';
 
@@ -27,7 +27,7 @@ const UserInsert = () => {
       listBreadcrumb={[
         {
           name: 'USUÁRIOS',
-          navigateTo: UserRoutesEnum.USER,
+          navigateTo: UserRoutesEnum.ADMIN,
         },
         {
           name: 'CADASTRAR USUÁRIO',

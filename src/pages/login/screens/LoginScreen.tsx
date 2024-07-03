@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 import IconStore from '/icons-online-store.png';
 
-import Button from '../../../shared/components/buttons/button/Button';
-import Input from '../../../shared/components/inputs/input/Input';
-import { BoxInput, TitleInput } from '../../../shared/components/inputs/input/input.styles';
-import { useRequests } from '../../../shared/hooks/useRequests';
+import Button from '../../../components/buttons/button/Button';
+import Input from '../../../components/inputs/input/Input';
+import { BoxInput, TitleInput } from '../../../components/inputs/input/input.styles';
+import api from '../../../service/api';
+import { setAuthorizationToken } from '../../../shared/functions/connection/auth';
+import { useGlobalReducer } from '../../../store/reducers/globalReducer/useGlobalReducer';
 import {
   ContainerLogin,
   ContainerLoginScreen,
@@ -20,11 +22,19 @@ import {
   TitleNotice,
 } from '../styles/loginScreen.styles';
 
+interface ErrorResponse {
+  response: {
+    data: {
+      message: string;
+    };
+  };
+}
+
 const LoginScreen = () => {
+  const { setNotification, setUser, loading, setLoading } = useGlobalReducer();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { authRequest, loading } = useRequests();
   const [errors, setErrors] = useState({
     email: '',
     password: '',
@@ -38,7 +48,7 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmitLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -49,14 +59,31 @@ const LoginScreen = () => {
       });
       setTimeout(() => {
         setErrors({ ...errors, email: '', password: '' });
-      }, 4000);
+      }, 5000);
       return;
     }
 
-    authRequest(navigate, {
-      email: email,
-      password: password,
-    });
+    setLoading(true);
+    try {
+      const response = await api.post('/auth', {
+        email: email,
+        password: password,
+      });
+
+      const { accessToken, user } = response.data;
+
+      setUser(user);
+      setAuthorizationToken(accessToken);
+      navigate('/product');
+    } catch (error) {
+      if (error) {
+        const err = error as ErrorResponse;
+        const errorMessage = err.response.data.message;
+        setNotification('Erro!', 'error', errorMessage);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

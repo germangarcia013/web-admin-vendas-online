@@ -2,16 +2,16 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Input, Modal } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-import Button from '../../../shared/components/buttons/button/Button';
-import Loading from '../../../shared/components/loading/Loading';
-import Screen from '../../../shared/components/screen/Screen';
+import Button from '../../../components/buttons/button/Button';
+import Loading from '../../../components/loading/Loading';
+import Screen from '../../../components/screen/Screen';
 import {
   DisplayFlex,
   DisplayFlexJustifyBetween,
   DisplayFlexJustifyCenter,
-} from '../../../shared/components/styles/display.styled';
-import { LimitedContainer } from '../../../shared/components/styles/limited.styled';
-import Table from '../../../shared/components/table/Table';
+} from '../../../components/styles/display.styled';
+import { LimitedContainer } from '../../../components/styles/limited.styled';
+import Table from '../../../components/table/Table';
 import { CategoryType } from '../../../shared/types/CategoryType';
 import { useCategory } from '../hooks/useCategory';
 
@@ -45,7 +45,7 @@ const Category = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Produtos',
+      title: 'Quantidade',
       dataIndex: 'amountProducts',
       key: 'amountProducts',
       render: (text) => <a>{text}</a>,

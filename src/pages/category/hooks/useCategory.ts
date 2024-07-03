@@ -1,28 +1,45 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { URL_CATEGORY, URL_CATEGORY_ID } from '../../../shared/constants/urls';
-import { MethodsEnum } from '../../../shared/enums/methods.enum';
-import { useRequests } from '../../../shared/hooks/useRequests';
+import api from '../../../service/api';
+import { getAuthorizationToken } from '../../../shared/functions/connection/auth';
 import { useCategoryReducer } from '../../../store/reducers/categoryReducer/useCategoryReducer';
+import { useGlobalReducer } from '../../../store/reducers/globalReducer/useGlobalReducer';
 import { CategoryRoutesEnum } from '../routes';
 
 export const useCategory = () => {
+  const { setNotification, loading, setLoading } = useGlobalReducer();
   const { categories, setCategories } = useCategoryReducer();
   const [categoryIdDelete, setCategoryIdDelete] = useState<number | undefined>();
   const [categoriesFiltered, setCategoriesFiltered] = useState(categories);
-  const { request, loading } = useRequests();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!categories || categories.length === 0) {
-      request(URL_CATEGORY, MethodsEnum.GET, setCategories);
-    }
-  }, []);
 
   useEffect(() => {
     setCategoriesFiltered([...categories]);
   }, [categories]);
+
+  useEffect(() => {
+    setLoading(true);
+    const getCategory = async () => {
+      try {
+        const response = await api.get('/category', {
+          headers: {
+            Authorization: getAuthorizationToken(),
+          },
+        });
+
+        const { data } = response;
+
+        setLoading(false);
+        setCategories(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getCategory();
+  }, []);
 
   const handleOnChangeSearch = (value: string) => {
     if (!value) {
@@ -49,19 +66,35 @@ export const useCategory = () => {
   };
 
   const handleConfirmDeleteCategory = async () => {
-    await request(
-      URL_CATEGORY_ID.replace('{categoryId}', `${categoryIdDelete}`),
-      MethodsEnum.DELETE,
-      undefined,
-      undefined,
-      'Categoria deletada com sucesso!',
-    );
-    request(URL_CATEGORY, MethodsEnum.GET, setCategories);
-    setCategoryIdDelete(undefined);
+    try {
+      setLoading(true);
+      await api.delete(`/category/${categoryIdDelete}`, {
+        headers: {
+          Authorization: getAuthorizationToken(),
+        },
+      });
+
+      setNotification('Sucesso!', 'success', 'Categoria deletada com sucesso!');
+      setCategoryIdDelete(undefined);
+
+      const response = await api.get('/category', {
+        headers: {
+          Authorization: getAuthorizationToken(),
+        },
+      });
+
+      const { data } = response;
+
+      setCategories(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoToEditCategory = (categoryId: number) => {
-    navigate(CategoryRoutesEnum.CATEGORY_EDIT.replace(':categoryId', `${categoryId}`));
+    navigate(`/category/${categoryId}`);
   };
 
   return {

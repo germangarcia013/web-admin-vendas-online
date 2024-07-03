@@ -29,8 +29,9 @@ export const ContainerLogin = styled.div`
   border-radius: 20px;
   margin: auto;
 
-  @media (max-width: 1400px) {
-    height: 600px;
+  @media (max-width: 1440px) {
+    height: 80%;
+    width: 25%;
   }
 `;
 

@@ -7,7 +7,7 @@ export const ScreenContainer = styled.div`
   width: calc(100% - 368px);
   margin-left: auto;
 
-  @media (max-width: 1400px) {
+  @media (max-width: 1440px) {
     padding: 10px 32px;
     margin: 20px 32px;
     width: calc(100% - 300px);

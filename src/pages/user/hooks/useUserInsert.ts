@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { URL_USER } from '../../../shared/constants/urls';
+import api from '../../../service/api';
 import { InsertUser } from '../../../shared/dtos/InsertUser.dto';
-import { MethodsEnum } from '../../../shared/enums/methods.enum';
-import { useRequests } from '../../../shared/hooks/useRequests';
+import { getAuthorizationToken } from '../../../shared/functions/connection/auth';
+import { useGlobalReducer } from '../../../store/reducers/globalReducer/useGlobalReducer';
 import { UserRoutesEnum } from '../routes';
 
 export const useUserInsert = () => {
+  const { setNotification, loading, setLoading } = useGlobalReducer();
+
   const navigate = useNavigate();
-  const { request, loading } = useRequests();
   const [disabledButton, setDisabledButton] = useState(true);
   const [user, setUser] = useState<InsertUser>({
     cpf: '',
@@ -35,14 +36,29 @@ export const useUserInsert = () => {
   };
 
   const handleCancelInsert = () => {
-    navigate(UserRoutesEnum.USER);
+    navigate(UserRoutesEnum.ADMIN);
   };
 
   const handleInsertAdmin = async () => {
-    const result = await request(URL_USER, MethodsEnum.POST, undefined, user);
-    if (result) {
-      navigate(UserRoutesEnum.USER);
-    }
+    setLoading(true);
+    await api.post(
+      '/user/admin',
+      {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        phone: user.phone,
+        cpf: user.cpf,
+      },
+      {
+        headers: {
+          Authorization: getAuthorizationToken(),
+        },
+      },
+    );
+    setLoading(false);
+    navigate(UserRoutesEnum.ADMIN);
+    setNotification('Sucesso!', 'success', 'Admin criado com sucesso!');
   };
 
   return {
